@@ -1,0 +1,294 @@
+body,th,td,input,select,textarea,button {
+	font: 12px/1.5em Verdana, "Lucida Grande", Arial, Helvetica, sans-serif;
+}
+
+img {
+	border: 0 none;
+}
+
+a img {
+	border-width: 0;
+	vertical-align: middle
+}
+
+:focus {
+	outline: 0;
+}
+
+a:focus {
+	outline: 0;
+}
+
+:link,:visited {
+	text-decoration: none;
+	outline: 0;
+}
+
+input[type="text"]:focus,input[type="password"]:focus,textarea:focus {
+	outline: 0;
+}
+
+ol,ul {
+	list-style: none;
+}
+
+button::-moz-focus-inner {
+	border-color: transparent !important;
+}
+
+input::-webkit-input-placeholder {
+	font-size: 13px;
+}
+
+input::-moz-placeholder {
+	font-size: 13px;
+}
+
+textarea::-webkit-input-placeholder {
+	font-size: 13px;
+}
+
+textarea::-moz-placeholder {
+	font-size: 13px;
+}
+
+input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly] {
+	cursor: default;
+	background-color: #f6f6f6;
+	box-shadow: none;
+}
+
+.solid_line {
+	clear: both;
+	border-top: 1px solid #ccc;
+}
+
+.dotted_line {
+	clear: both;
+	margin-top: 8px;
+	border-top: 1px dashed #ccc;
+}
+
+input.ng-invalid.ng-dirty,input.error,div.text.error {
+	border-color: #e9322d;
+	-webkit-box-shadow: 0 0 6px #f8b9b7;
+	-moz-box-shadow: 0 0 6px #f8b9b7;
+	box-shadow: 0 0 6px #f8b9b7;
+}
+
+input.ng-invalid.ng-dirty:focus,input.error:focus {
+	border-color: #e9322d;
+	-webkit-box-shadow: 0 0 6px #f8b9b7;
+	-moz-box-shadow: 0 0 6px #f8b9b7;
+	box-shadow: 0 0 6px #f8b9b7;
+}
+
+input.ng-dirty.my-invalid {
+	color: #c09853;
+	border-color: #c09853;
+}
+
+i.icon-phone {
+	background: url(../image/icon-phone.png) no-repeat;
+}
+
+i.icon-microphone {
+	margin-left: 1px;
+	background: url(../image/microphone.png) no-repeat;
+}
+
+.area_title {
+	width: 100%;
+	height: 26px;
+	line-height: 26px;
+	background-color: #A0E6A0;
+}
+
+.area_title span {
+	font-size: 14px;
+	padding-left: 8px;
+}
+
+.admin-content .sidenav>li {
+	line-height: 20px;
+}
+
+.background {
+	position: fixed;
+	_position: absolute;
+	z-index: 1040;
+	opacity: 0.6;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	_width: expression(document.documentElement.clientWidth);
+	height: 100%;
+	_height: expression(document.documentElement.clientHeight);
+	background: rgb(50, 50, 50);
+	background: rgba(0, 0, 0, 0.5);
+}
+
+/********************************以上为全局样式*********************************************/
+body {
+	padding-top: 90px;
+}
+
+#header {
+	font-size: 14px;
+}
+
+#header .a_login,#header .a_register {
+	padding: 10px 5px;
+	margin: 0;
+}
+
+#header i.ab_m {
+	margin-top: 2px;
+}
+
+#header .a_name {
+	padding: 10px 3px 10px 10px;
+	margin: 0;
+}
+
+#header .black_dot {
+	height: 26px;
+	margin-top: 10px;
+	color: #777777;
+	margin-right: 1px;
+}
+
+#header .avatar {
+	padding: 1px;
+	margin-top: 9px;
+	margin-right: 4px;
+}
+
+#header .dropdown-menu {
+	border-radius: 0;
+	margin-top: 4px;
+	min-width: 120px;
+}
+
+#header .dropdown-menu>li>a {
+	text-align: center;
+}
+
+#browser_tip h3 {
+	font-size: 20px;
+}
+
+#browser_tip .modal-body .tip_msg {
+	font-size: 14px;
+	margin-bottom: 0;
+}
+
+#browser_tip .modal-footer .checkbox {
+	width: 20%;
+	margin-top: 5px;
+}
+
+/*
+sider style
+*/
+.sider-content .sidenav {
+	padding: 0;
+	height: 590px;
+	border-right: 1px solid #e5e5e5;
+}
+
+.sider-content .sidenav>li {
+	background-color: #f9f9f9;
+}
+
+.sider-content .sidenav>li>a {
+	display: block;
+	margin: 0 0 -1px;
+	padding: 8px 14px;
+	border: 1px solid #e5e5e5;
+	border-left: 0;
+	border-right: 0;
+	text-align: center;
+}
+
+.sider-content .sidenav>li.active {
+	width: 221px;
+	margin-left: -1px;
+	border-bottom: 1px solid #48a8bd;
+}
+
+.sider-content .sidenav>li.active>a {
+	border: 1px solid #00b38a;
+}
+
+.sider-content .sidenav>li>a:hover {
+	background-color: #f9f9f9;
+}
+
+.icon-chevron-right {
+	float: right;
+	margin-top: 8px;
+	margin-right: -6px;
+	opacity: 1;
+}
+
+.sider-content .sidenav .nav-header {
+	margin: 0;
+	font-size: 15px;
+	height: 32px;
+	line-height: 32px;
+	background: #fff;
+}
+
+.sider-content .sidenav a:hover .icon-chevron-right {
+	opacity: .5;
+}
+
+.sider-content .sidenav a .icon-chevron-right {
+	opacity: .25;
+}
+
+.sider-content .sidenav .active a .icon-chevron-right {
+	opacity: 1;
+}
+
+.sider-content .sidenav .active a:hover .icon-chevron-right {
+	opacity: 1;
+}
+
+.sider-content .sidenav .active a:hover {
+	background-color: #00a57f;
+}
+
+/******************************* 错误页面样式 ***************************************/
+.error_area {
+	width: 64%;
+	margin: 100px auto;
+	height: 230px;
+	font-size: 14px;
+}
+
+.error_img {
+	float: left;
+	margin-right: 30px;
+}
+
+.error_img img {
+	padding-top: 16px;
+}
+
+.error_info {
+	float: left;
+	width: 60%;
+}
+
+.error_info .red {
+	color: red;
+}
+
+.error_info .h-box {
+	display: block;
+	margin-left: 12px;
+}
+
+/******************************* 错误页面样式 ***************************************/

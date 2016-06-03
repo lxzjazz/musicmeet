@@ -1,0 +1,283 @@
+#setting {
+	border: 1px solid #e5e5e5;
+}
+
+#setting h1 {
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
+	color: #00b38a;
+}
+
+#setting table td {
+	font-size: 14px;
+}
+
+#setting table td input {
+	margin-bottom: 0;
+}
+
+#page{
+	margin-top: 10px;
+}
+/**************************setting-profile样式**********************************/
+#profile_area {
+	width: 98%;
+}
+
+#profile_area .form-horizontal .control-label {
+	width: 100px;
+	text-align: left;
+}
+
+#profile_area .control-group {
+	margin-bottom: 50px;
+}
+
+#profile_area .form-horizontal .controls {
+	margin-left: 100px;
+}
+
+#profile_area .section-content textarea {
+	float: left;
+	resize: none;
+	width: 336px;
+	height: 100px;
+	padding-bottom: 0;
+	border: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+#profile_area .section-content .text {
+	width: 348px;
+	background-color: #fff;
+	color: #555;
+	vertical-align: middle;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border linear .2s, box-shadow linear .2s;
+	-moz-transition: border linear .2s, box-shadow linear .2s;
+	-o-transition: border linear .2s, box-shadow linear .2s;
+	transition: border linear .2s, box-shadow linear .2s;
+}
+
+#profile_area .section-content .focus {
+	border-color: rgba(0, 179, 138, 0.8);
+	outline: 0;
+	outline: thin dotted \9;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 179, 138, 0.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 179, 138, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 179, 138, 0.6);
+}
+
+#profile_area .section-content .text span {
+	display: inline-block;
+	margin-right: 4px;
+	font-size: 16px;
+	height: 20px;
+	width: 308px;
+	color: #aaa;
+}
+
+#profile_area .section-content .text span i {
+	font-size: 18px;
+	font-style: italic;
+	font-family: Georgia;
+	display: inline-block;
+	padding-bottom: 3px;
+	height: 14px;
+}
+
+#profile_area .default_select {
+	width: 140px;
+	font-size: 14px;
+}
+
+#profile_area .select_text {
+	width: 140px;
+	height: 28px;
+	border: 1px solid #dedede;
+	background: url(../image/cussel_normal.png) right center no-repeat;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	cursor: pointer;
+}
+
+#profile_area .select_text span {
+	display: inline-block;
+	height: 100%;
+	width: 80%;
+	margin-left: 16px;
+	line-height: 26px;
+}
+
+#profile_area .select_menu {
+	display: none;
+	width: 100%;
+	max-height: 240px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	position: relative;
+	border-left: 1px solid #dedede;
+	border-right: 1px solid #dedede;
+	border-bottom: 1px solid #dedede;
+	margin-bottom: -242px;
+	background-color: white;
+	z-index: 3;
+}
+
+#profile_area .select_menu ul {
+	margin: 0;
+}
+
+#profile_area .select_menu ul li:hover,.select_menu ul li.select {
+	background: #f7f7f7;
+}
+
+#profile_area .select_menu ul li a {
+	display: inline-block;
+	width: 80%;
+	height: 100%;
+	margin-left: 20%;
+	text-decoration: none;
+	cursor: pointer;
+}
+/**************************setting-password样式**********************************/
+#password_area {
+	width: 98%;
+}
+
+#password_area .password_info {
+	margin-top: 10px;
+	border-collapse: separate;
+	border-spacing: 10px;
+}
+
+#password_area .password_info .msg {
+	margin-left: 10px;
+	visibility: hidden;
+}
+
+#password_area .password_info .error .msg {
+	visibility: visible;
+}
+
+#password_area input[type='submit'] {
+	margin-top: 10px;
+}
+/**************************setting-email样式**********************************/
+#email_area {
+	width: 98%;
+}
+
+#email_area #reset_eamil {
+	padding-top: 12px;
+	float: right;
+	font-size: 13px;
+}
+
+#email_area .email_info {
+	margin-top: 10px;
+	border-collapse: separate;
+	border-spacing: 10px;
+}
+
+#email_area .email_info .msg {
+	visibility: hidden;
+	margin-left: 10px;
+}
+
+#email_area .email_info .error .msg {
+	visibility: visible;
+}
+
+#email_area .change_email {
+	display: none;
+}
+
+/**************************setting-avatar样式**********************************/
+#avatar_area {
+	width: 98%;
+}
+
+#form-avatar {
+	margin-top: 0;
+}
+
+#avatar_area #reset_avatar {
+	padding-top: 13px;
+	float: right;
+	font-size: 13px;
+}
+
+#avatar_area #picture_original {
+	width: 300px;
+	height: 300px;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	display: none;
+}
+
+#avatar_area #picture_index {
+	width: 298px;
+	height: 298px;
+	background-color: #EEE;
+}
+
+#avatar_area #picture_original img {
+	max-width: 300px;
+	max-height: 300px;
+}
+
+#avatar_area #file {
+	display: none;
+}
+
+#avatar_area .btn_area {
+	margin-bottom: 30px;
+	width: 300px;
+	height: 30px;
+}
+
+#avatar_area .big_pic {
+	display: block;
+	width: 100%;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+#avatar_area .small_pic {
+	width: 90px;
+	padding: 5px;
+	padding-bottom: 0;
+	text-align: center;
+	margin: 0;
+}
+
+#avatar_area .pic_size {
+	width: 90px;
+	padding: 5px;
+	padding-top: 0;
+	text-align: center;
+}
+
+#avatar_area #picture_200 {
+	display: none;
+}
+
+#avatar_area #picture_90 {
+	display: none;
+}
+
+#avatar_area #picture_30 {
+	display: none;
+}
+
+#avatar_area img {
+	max-width: none;
+}

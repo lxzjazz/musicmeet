@@ -1,0 +1,100 @@
+body {
+	background-color: #EBEBE7;
+}
+
+.section {
+	background-color: #fff;
+	border: 1px solid #EEEBE7;
+	margin-bottom: 18px;
+	float: none;
+	margin: 0 auto;
+}
+
+.section-large .section-header {
+	height: 55px;
+	line-height: 55px;
+}
+
+.section-header {
+	background-color: #f6f6f6;
+	border-bottom: 1px solid #f4f4f4;
+	height: 46px;
+	padding: 0 15px 0;
+}
+
+.section-header h3 {
+	color: #00b38a;
+	text-transform: uppercase;
+	margin: 0;
+	line-height: 52px;
+	height: 60px;
+}
+
+.section-content .help-block,.section-content .help-inline {
+	visibility: hidden;
+}
+
+.section-content .username-tip,.section-content .email-tip {
+	color: #c09853;
+}
+
+.section-content .password1-tip,.section-content .password2-tip {
+	color: #b94a48;
+}
+
+.section-content .email-error,.section-content .username-error {
+	color: #b94a48;
+	visibility: visible;
+}
+
+#form-login .checkbox {
+	display: inline;
+	padding-left: 8px;
+}
+
+#form-login .checkbox input {
+	margin-left: 0;
+}
+
+form {
+	margin-top: 50px;
+	padding-bottom: 2px;
+}
+
+.reg_nav {
+	margin-top: -60px;
+	float: right;
+	font-size: 13px;
+}
+
+.reg_nav .backward {
+	background: url("../image/login-return.png") no-repeat 0 1px;
+	padding-left: 18px;
+}
+
+.reg_nav,.reg_nav a {
+	color: #00b38a;
+}
+
+.reg_nav a:hover {
+	color: #00a57f;
+}
+
+.page-header h3 {
+	font-size: 18px;
+	line-height: 20px;
+	padding-left: 16px;
+	margin: 0;
+	color: #00b38a;
+}
+
+.submit-result {
+	padding: 5px 8px;
+	font-size: 14px;
+	margin-left: 20px;
+	visibility: hidden;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-ms-border-radius: 0px;
+	border-radius: 0px;
+}
