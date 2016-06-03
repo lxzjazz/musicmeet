@@ -9,13 +9,19 @@ import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
+
 import cn.musicmeet.controllers.GlobalDeny;
 
 @GlobalDeny
 @Path("")
 public class LogoutController {
+
+	private Logger logger = Logger.getLogger(LogoutController.class);
+
 	@Get
-	public String get_logout(Invocation inv, HttpServletRequest request, HttpServletResponse response) {
+	public String getLogout(Invocation inv, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			// 清空session中的值
 			request.getSession().invalidate();
@@ -25,13 +31,13 @@ public class LogoutController {
 			cookie.setPath(request.getContextPath() + "/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return "r:" + request.getContextPath() + "/";
 	}
 
 	@Post
-	public JSONObject post_logout(JSONObject json, Invocation inv, HttpServletRequest request, HttpServletResponse response) {
+	public JSONObject postLogout(JSONObject json, Invocation inv, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			// 清空session中的值
 			request.getSession().invalidate();
@@ -42,7 +48,7 @@ public class LogoutController {
 			response.addCookie(cookie);
 			json.element("success", "退出成功");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			json.element("error", "对不起,服务器异常");
 		}
 		return json;

@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import net.paoding.rose.web.ControllerInterceptorAdapter;
 import net.paoding.rose.web.Invocation;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import redis.clients.jedis.ShardedJedisPool;
 import cn.musicmeet.beans.LoginUser;
-import cn.musicmeet.beans.User;
 import cn.musicmeet.util.JedisUtil;
 
 public class GlobalInterceptor extends ControllerInterceptorAdapter {
@@ -31,39 +31,39 @@ public class GlobalInterceptor extends ControllerInterceptorAdapter {
 		HttpServletRequest request = inv.getRequest();
 		HttpServletResponse response = inv.getResponse();
 
-		String current_sessionID = request.getSession().getId();
-		request.setAttribute("sessionID", current_sessionID);
 		LoginUser loginUser = null;
-		// 读session
-		loginUser = JedisUtil.getUserBySession(pool, request.getSession());
-		// 如果session读取失败
-		if (loginUser == null || !loginUser.getSessionID().equals(current_sessionID)) {
-			// 通过cookie读取
-			loginUser = JedisUtil.getUserByCookie(pool, request.getCookies());
-			// 如果cookie读取失败,或者(用户未选择自动登录,并且session已过期),则删除cookie并跳出拦截器
-			if (loginUser == null || (loginUser.getCookiesaved().equals("false") && !loginUser.getSessionID().equals(current_sessionID))) {
+		String currentSessionID = request.getSession().getId();
+		// 通过session中的uid读取用户信息
+		String uid = (String) request.getSession().getAttribute("uid");
+		loginUser = JedisUtil.getLoginUserByUid(pool, uid);
+		// 读取用户信息失败或者用户信息中的sessionID已过期
+		if (!checkLoginUser(loginUser) || !loginUser.getSessionID().equals(currentSessionID)) {
+			// 通过cookie读取用户信息
+			loginUser = JedisUtil.getLoginUserByCookie(pool, request.getCookies());
+			// 读取用户信息失败(或者用户信息sessionID已过期且用户未选择自动登录),则删除cookie并跳出拦截器
+			if (!checkLoginUser(loginUser) || (!loginUser.getSessionID().equals(currentSessionID) && !loginUser.isCookieSaved())) {
 				Cookie delete_cookie = new Cookie("user_token", null);
 				delete_cookie.setMaxAge(0);
 				delete_cookie.setPath(request.getContextPath() + "/");
 				response.addCookie(delete_cookie);
 				return true;
 			}
-			// 如果cookie读取成功
-			// 1.将member中的sessionID更新
-			loginUser.setSessionID(current_sessionID);
-			// 2.将cookie中的sessionID更新
-			JedisUtil.resetUser(pool, loginUser.getUid(), "sessionID", loginUser.getSessionID());
+			// 读取用户信息成功
+			// 1.将内存数据库中的sessionID更新
+			JedisUtil.resetUser(pool, loginUser.getUid(), LoginUser.SESSION_ID, currentSessionID);
+			// 2.将loginUser中的sessionID更新
+			loginUser.setSessionID(currentSessionID);
 			// 3.将uid存入session
 			request.getSession().setAttribute("uid", loginUser.getUid());
 		}
-		if (checkLoginUser(loginUser)) {
-			Map<String, Object> sGlobal = new HashMap<String, Object>();
-			sGlobal.put(User.UID, loginUser.getUid());
-			sGlobal.put(User.USERNAME, loginUser.getUsername());
-			sGlobal.put(User.ACCOUNT_STATUS, loginUser.getAccountStatus());
-			sGlobal.put(User.AVATAR_ID, loginUser.getAvatarID());
-			request.setAttribute(User.SGLOBAL, sGlobal);
-		}
+		Map<String, Object> sGlobal = new HashMap<String, Object>();
+		sGlobal.put(LoginUser.UID, loginUser.getUid());
+		sGlobal.put(LoginUser.USERNAME, loginUser.getUsername());
+		sGlobal.put(LoginUser.EMAIL, loginUser.getEmail());
+		sGlobal.put(LoginUser.ACCOUNT_STATUS, loginUser.getAccountStatus());
+		sGlobal.put(LoginUser.AVATAR_ID, loginUser.getAvatarID());
+		sGlobal.put(LoginUser.SESSION_ID, loginUser.getSessionID());
+		request.setAttribute(LoginUser.SGLOBAL, sGlobal);
 		return true;
 	}
 
@@ -73,7 +73,7 @@ public class GlobalInterceptor extends ControllerInterceptorAdapter {
 	}
 
 	private boolean checkLoginUser(LoginUser loginUser) {
-		if (loginUser == null || loginUser.getUid() == null || loginUser.getUsername() == null || loginUser.getAccountStatus() == null || loginUser.getAvatarID() == null) {
+		if (loginUser == null || StringUtils.isNoneBlank(loginUser.getUid(), loginUser.getUsername(), loginUser.getEmail(), loginUser.getAccountStatus(), loginUser.getAvatarID(), loginUser.getSessionID())) {
 			return false;
 		}
 		return true;

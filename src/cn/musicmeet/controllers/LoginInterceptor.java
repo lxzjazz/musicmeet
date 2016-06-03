@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.paoding.rose.web.ControllerInterceptorAdapter;
 import net.paoding.rose.web.Invocation;
-import cn.musicmeet.beans.User;
+import cn.musicmeet.beans.LoginUser;
 
 public class LoginInterceptor extends ControllerInterceptorAdapter {
 
@@ -24,7 +24,7 @@ public class LoginInterceptor extends ControllerInterceptorAdapter {
 		HttpServletRequest request = inv.getRequest();
 		HttpServletResponse response = inv.getResponse();
 		// 判断用户是否登录成功
-		if (inv.getRequest().getAttribute(User.SGLOBAL) == null) {
+		if (inv.getRequest().getAttribute(LoginUser.SGLOBAL) == null) {
 			// 清空session中的值并退回主页
 			request.getSession().invalidate();
 			if (request.getMethod().equalsIgnoreCase("POST")) {

@@ -1,6 +1,7 @@
 package cn.musicmeet.beans;
 
 public class EmailInfo {
+	
 	private String email;
 	private Integer emailStatus;
 	private String shortEmail;

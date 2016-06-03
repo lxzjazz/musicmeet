@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -22,100 +21,92 @@ import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
-import cn.musicmeet.beans.User;
+import cn.musicmeet.beans.LoginUser;
 import cn.musicmeet.controllers.LoginRequired;
-import cn.musicmeet.util.ImageCutterUtil;
+import cn.musicmeet.util.ImageUtil;
 
 @Path("")
 public class AvatarController {
+
+	private Logger logger = Logger.getLogger(AvatarController.class);
+
 	// 支持上传的图片类型
 	private final static String[] IMGS = { "jpg", "png", "jpeg" };
 
 	@SuppressWarnings("unchecked")
 	@LoginRequired
 	@Post("upload")
-	public JSONObject post_avatar_upload(JSONObject json, Invocation inv, MultipartFile file, @Param("x") int x, @Param("y") int y, @Param("width") int width, @Param("height") int height) {
-		HttpServletRequest request = inv.getRequest();
-		Map<String, Object> sGlobal = (Map<String, Object>) request.getAttribute(User.SGLOBAL);
-		String avatar_id = (String) sGlobal.get(User.AVATAR_ID);
-		return upload_avatar(avatar_id, json, inv, file, x, y, width, height);
+	public JSONObject postAvatarUpload(JSONObject json, Invocation inv, HttpServletRequest request, MultipartFile file, @Param("x") int x, @Param("y") int y, @Param("width") int width, @Param("height") int height) {
+		Map<String, Object> sGlobal = (Map<String, Object>) request.getAttribute(LoginUser.SGLOBAL);
+		return uploadAvatar((String) sGlobal.get(LoginUser.AVATAR_ID), json, inv, file, x, y, width, height);
 	}
 
 	@Post("reg/upload")
-	public JSONObject post_avatar_reg_upload(JSONObject json, Invocation inv, MultipartFile file, @Param("x") int x, @Param("y") int y, @Param("width") int width, @Param("height") int height) {
-		HttpSession session = inv.getRequest().getSession();
-		String avatar_id = (String) session.getAttribute("avatar_id");
-		if (avatar_id == null) {
-			avatar_id = UUID.randomUUID().toString().replace("-", "");
-			session.setAttribute("avatar_id", avatar_id);
-		}
-		return upload_avatar(avatar_id, json, inv, file, x, y, width, height);
+	public JSONObject postAvatarRegUpload(JSONObject json, HttpSession session, Invocation inv, MultipartFile file, @Param("x") int x, @Param("y") int y, @Param("width") int width, @Param("height") int height) {
+		return uploadAvatar(session.getId(), json, inv, file, x, y, width, height);
 	}
 
 	@SuppressWarnings("unchecked")
 	@LoginRequired
 	@Post("reset")
-	public JSONObject post_avatar_reset(JSONObject json, Invocation inv) {
-
-		HttpServletRequest request = inv.getRequest();
-		Map<String, Object> sGlobal = (Map<String, Object>) request.getAttribute(User.SGLOBAL);
-
-		String avatar_id = (String) sGlobal.get(User.AVATAR_ID);
-
+	public JSONObject postAvatarReset(JSONObject json, Invocation inv, HttpServletRequest request) {
+		Map<String, Object> sGlobal = (Map<String, Object>) request.getAttribute(LoginUser.SGLOBAL);
 		try {
-			File small_img = new File(getrealPath(inv, avatar_id, "small"));
-			if (small_img.exists()) {
-				small_img.delete();
+			String avatarID = (String) sGlobal.get(LoginUser.AVATAR_ID);
+			File smallImg = new File(getRealPath(inv, avatarID, "small"));
+			if (smallImg.exists()) {
+				smallImg.delete();
 			}
-			File middle_img = new File(getrealPath(inv, avatar_id, "middle"));
-			if (middle_img.exists()) {
-				middle_img.delete();
+			File middleImg = new File(getRealPath(inv, avatarID, "middle"));
+			if (middleImg.exists()) {
+				middleImg.delete();
 			}
-			File big_img = new File(getrealPath(inv, avatar_id, "big"));
-			if (big_img.exists()) {
-				big_img.delete();
+			File bigImg = new File(getRealPath(inv, avatarID, "big"));
+			if (bigImg.exists()) {
+				bigImg.delete();
 			}
 			json.element("success", "头像重置成功");
 		} catch (Exception e) {
-			e.printStackTrace();
-			json.element("error", "服务器异常，头像重置失败");
+			logger.error(e.getMessage(), e);
+			json.element("error", "服务器异常, 头像重置失败");
 		}
 		return json;
 	}
 
 	@Post("reg/reset")
-	public JSONObject post_avatar_reset(JSONObject json, Invocation inv, @Param("avatar_id") String avatar_id) {
+	public JSONObject postAvatarReset(JSONObject json, Invocation inv, @Param("avatarID") String avatarID) {
 		try {
-			File small_img = new File(getrealPath(inv, avatar_id, "small"));
-			if (small_img.exists()) {
-				small_img.delete();
+			File smallImg = new File(getRealPath(inv, avatarID, "small"));
+			if (smallImg.exists()) {
+				smallImg.delete();
 			}
-			File middle_img = new File(getrealPath(inv, avatar_id, "middle"));
-			if (middle_img.exists()) {
-				middle_img.delete();
+			File middleImg = new File(getRealPath(inv, avatarID, "middle"));
+			if (middleImg.exists()) {
+				middleImg.delete();
 			}
-			File big_img = new File(getrealPath(inv, avatar_id, "big"));
-			if (big_img.exists()) {
-				big_img.delete();
+			File bigImg = new File(getRealPath(inv, avatarID, "big"));
+			if (bigImg.exists()) {
+				bigImg.delete();
 			}
 			json.element("success", "头像重置成功");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			json.element("error", "服务器异常，头像重置失败");
 		}
 		return json;
 	}
 
 	@Get
-	public String get_avatar(Invocation inv, @Param("size") String size) throws IOException {
-		HttpServletResponse response = inv.getResponse();
+	public void getAvatar(Invocation inv, @Param("size") String size, HttpServletResponse response) throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("image/jpeg");
 
 		// 设置默认大小
-		if (size == null || size != null && !size.equals("small") && !size.equals("middle") && !size.equals("big")) {
+		if (StringUtils.isBlank(size) && !size.equals("small") && !size.equals("middle") && !size.equals("big")) {
 			size = "middle";
 		}
 
@@ -141,23 +132,20 @@ public class AvatarController {
 		fis.close();
 		out.flush();
 		out.close();
-
-		return "";
 	}
 
-	@Get("{avatar_id}")
-	public String get_avatar_nickname(Invocation inv, @Param("avatar_id") String avatar_id, @Param("size") String size) throws IOException {
+	@Get("{avatarID}")
+	public void getAvatar(Invocation inv, @Param("avatarID") String avatarID, @Param("size") String size) throws IOException {
 		HttpServletResponse response = inv.getResponse();
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("image/jpeg");
 
 		// 设置默认大小
-		if (size == null || size != null && !size.equals("small") && !size.equals("middle") && !size.equals("big")) {
+		if (StringUtils.isBlank(size) && !size.equals("small") && !size.equals("middle") && !size.equals("big")) {
 			size = "middle";
 		}
 
-		String realPath = getrealPath(inv, avatar_id, size);
-
+		String realPath = getRealPath(inv, avatarID, size);
 		// 判断图片文件是否存在，不存在就将realPath改为默认
 		File file = new File(realPath);
 		if (!file.exists() || file.isDirectory()) {
@@ -183,11 +171,9 @@ public class AvatarController {
 		fis.close();
 		out.flush();
 		out.close();
-
-		return "";
 	}
 
-	private JSONObject upload_avatar(String avatar_id, JSONObject json, Invocation inv, MultipartFile file, @Param("x") int x, @Param("y") int y, @Param("width") int width, @Param("height") int height) {
+	private JSONObject uploadAvatar(String avatarID, JSONObject json, Invocation inv, MultipartFile file, @Param("x") int x, @Param("y") int y, @Param("width") int width, @Param("height") int height) {
 
 		if (file == null || file.isEmpty()) {
 			json.element("error", "找不到文件");
@@ -202,7 +188,7 @@ public class AvatarController {
 			String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
 
 			// 判断格式是否支持，否则返回格式不支持
-			if (!imgs_check(IMGS, fileExtension)) {
+			if (!imgsCheck(IMGS, fileExtension)) {
 				json.element("error", "图片格式不支持");
 				return json;
 			}
@@ -212,7 +198,7 @@ public class AvatarController {
 				return json;
 			}
 
-			String tempPath = getrealPath(inv, avatar_id, "temp");
+			String tempPath = getRealPath(inv, avatarID, "temp");
 
 			// 根据不同的操作系统，设置文件操作符
 			tempPath = tempPath.replace("/", System.getProperties().getProperty("file.separator"));
@@ -235,13 +221,14 @@ public class AvatarController {
 			// 关闭流
 			out.flush();
 			out.close();
-			String tempPath_cut = getrealPath(inv, avatar_id, "cut");
 
-			String realPath_big = getrealPath(inv, avatar_id, "big");
+			String tempPathCut = getRealPath(inv, avatarID, "cut");
 
-			String realPath_middle = getrealPath(inv, avatar_id, "middle");
+			String realPathBig = getRealPath(inv, avatarID, "big");
 
-			String realPath_small = getrealPath(inv, avatar_id, "small");
+			String realPathMiddle = getRealPath(inv, avatarID, "middle");
+
+			String realPathSmall = getRealPath(inv, avatarID, "small");
 
 			// 判断图片源大小比例，是否超出300x300像素
 			BufferedImage image = ImageIO.read(savefile);
@@ -262,16 +249,16 @@ public class AvatarController {
 					height = Double.valueOf(height * b).intValue();
 				}
 			}
-			ImageCutterUtil.cutImage(tempPath, tempPath_cut, x, y, width, height);
+			ImageUtil.cutImage(tempPath, tempPathCut, x, y, width, height);
 
 			// 图片大小压缩
-			ImageCutterUtil.zoom(tempPath_cut, realPath_big, 200, 200);
-			ImageCutterUtil.zoom(tempPath_cut, realPath_middle, 90, 90);
-			ImageCutterUtil.zoom(tempPath_cut, realPath_small, 30, 30);
+			ImageUtil.zoom(tempPathCut, realPathBig, 200, 200);
+			ImageUtil.zoom(tempPathCut, realPathMiddle, 90, 90);
+			ImageUtil.zoom(tempPathCut, realPathSmall, 30, 30);
 
 			// 删除缓存文件
 			File tempFile = new File(tempPath);
-			File cutFile = new File(tempPath_cut);
+			File cutFile = new File(tempPathCut);
 			if (tempFile.exists()) {
 				tempFile.delete();
 			}
@@ -280,17 +267,17 @@ public class AvatarController {
 			}
 			json.element("success", "头像上传成功");
 		} catch (Exception e) {
-			e.printStackTrace();
-			json.element("error", "服务器异常,头像上传失败");
+			logger.error(e.getMessage(), e);
+			json.element("error", "服务器异常, 头像上传失败");
 		}
 		return json;
 	}
 
-	private String getrealPath(Invocation inv, String avatar_id, String size) {
-		return inv.getServletContext().getRealPath("data") + "/avatar/" + avatar_id + "_" + size + ".jpeg";
+	private String getRealPath(Invocation inv, String avatarID, String size) {
+		return inv.getServletContext().getRealPath("data") + "/avatar/" + avatarID + "_" + size + ".jpeg";
 	}
 
-	private boolean imgs_check(String[] imgs, String fileExtension) {
+	private boolean imgsCheck(String[] imgs, String fileExtension) {
 		for (String str : imgs) {
 			if (str.equalsIgnoreCase(fileExtension)) {
 				return true;

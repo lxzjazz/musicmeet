@@ -1,6 +1,20 @@
 package cn.musicmeet.beans;
 
+import org.apache.commons.lang3.StringUtils;
+
+import cn.musicmeet.util.CommonUtil;
+
 public class LoginUser {
+
+	public static final String SGLOBAL = "sGlobal";
+	public static final String UID = "uid";
+	public static final String USERNAME = "username";
+	public static final String EMAIL = "email";
+	public static final String ACCOUNT_STATUS = "account_status";
+	public static final String SESSION_ID = "session_id";
+	public static final String AVATAR_ID = "avatar_id";
+	public static final String COOKIE_SAVED = "cookie_saved";
+
 	private String uid;
 	private String email;
 	private String username;
@@ -8,8 +22,7 @@ public class LoginUser {
 	private String salt;
 	private String accountStatus;
 	private String sessionID;
-	private String avatarID;
-	private String cookiesaved = "false";
+	private boolean cookieSaved;
 
 	public String getUid() {
 		return uid;
@@ -59,20 +72,11 @@ public class LoginUser {
 		this.sessionID = sessionID;
 	}
 
-	public String getCookiesaved() {
-		return cookiesaved;
-	}
-
-	public void setCookiesaved(String cookiesaved) {
-		this.cookiesaved = cookiesaved;
-	}
-
 	public String getAvatarID() {
-		return avatarID;
-	}
-
-	public void setAvatarID(String avatarID) {
-		this.avatarID = avatarID;
+		if (StringUtils.isNotBlank(email)) {
+			return CommonUtil.md5(email);
+		}
+		return "";
 	}
 
 	public String getEmail() {
@@ -81,5 +85,13 @@ public class LoginUser {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public boolean isCookieSaved() {
+		return cookieSaved;
+	}
+
+	public void setCookieSaved(boolean cookieSaved) {
+		this.cookieSaved = cookieSaved;
 	}
 }

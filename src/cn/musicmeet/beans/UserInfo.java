@@ -5,7 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import cn.musicmeet.util.CommonUtil;
 
 public class UserInfo {
-	private long uid;
+	
+	private Long uid;
 	private String username;
 	private String email;
 	private String location;

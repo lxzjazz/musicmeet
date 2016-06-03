@@ -1,12 +1,11 @@
 package cn.musicmeet.util;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import redis.clients.jedis.ShardedJedis;
@@ -17,77 +16,58 @@ public class JedisUtil {
 
 	private static Logger logger = Logger.getLogger(JedisUtil.class);
 
-	public static void saveUser(ShardedJedisPool pool, String userCookie, LoginUser loginUser) throws NoSuchAlgorithmException {
-		Map<String, String> userMap = new HashMap<String, String>();
-		String uid = loginUser.getUid();
-		userMap.put("uid", uid);
-		userMap.put("username", loginUser.getUsername());
-		userMap.put("accountStatus", loginUser.getAccountStatus());
-		userMap.put("cookiesaved", loginUser.getCookiesaved());
-		userMap.put("sessionID", loginUser.getSessionID());
-		userMap.put("avatarID", CommonUtil.md5(loginUser.getEmail()));
+	public static boolean saveUser(ShardedJedisPool pool, LoginUser loginUser, String cookie) {
 		ShardedJedis jedis = null;
 		try {
 			jedis = pool.getResource();
-			if (!jedis.exists(JedisKeyGenerator.getCookieKey(uid))) {
-				// 存cookie-map
-				jedis.hmset(userCookie, userMap);
-				// 存user-map
-				userMap.put("cookie", userCookie);
-				jedis.hmset(JedisKeyGenerator.getCookieKey(uid), userMap);
-			} else {
-				String last_cookie = jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "cookie").get(0);
-				if (last_cookie != null) {
-					// 删除cookie-map
-					jedis.del(last_cookie);
-				}
-				// 存cookie-map
-				jedis.hmset(userCookie, userMap);
-				// 删除user-map
-				jedis.del(JedisKeyGenerator.getCookieKey(uid));
-				// 存user-map
-				userMap.put("cookie", userCookie);
-				jedis.hmset(JedisKeyGenerator.getCookieKey(uid), userMap);
+
+			// userCookie
+			String userCookiekey = JedisKeyGenerator.getUserCookieKeyByUid(loginUser.getUid());
+			// 清除旧数据
+			if (jedis.exists(userCookiekey)) {
+				// 清除cookieMap旧数据
+				jedis.del(jedis.get(userCookiekey));
+				// 清除userCookie旧数据
+				jedis.del(userCookiekey);
 			}
+
+			// 组装数据
+			Map<String, String> mapData = new HashMap<String, String>();
+			mapData.put(LoginUser.UID, loginUser.getUid());
+			mapData.put(LoginUser.USERNAME, loginUser.getUsername());
+			mapData.put(LoginUser.EMAIL, loginUser.getEmail());
+			mapData.put(LoginUser.ACCOUNT_STATUS, loginUser.getAccountStatus());
+			mapData.put(LoginUser.SESSION_ID, loginUser.getSessionID());
+			mapData.put(LoginUser.COOKIE_SAVED, Boolean.toString(loginUser.isCookieSaved()));
+
+			// 新cookieMapKey
+			String cookieMapKey = JedisKeyGenerator.getCookieMapKeyByCookie(cookie);
+			// 更新或者存入cookie-map(默认会话保持保持30天)
+			jedis.hmset(cookieMapKey, mapData);
+			// FIXME 是否有必要
+			jedis.expire(cookieMapKey, 60 * 60 * 24 * 30);
+
+			// 更新或存入user-cookie
+			jedis.set(userCookiekey, cookieMapKey);
+			// FIXME 是否有必要
+			jedis.expire(userCookiekey, 60 * 60 * 24 * 30);
+			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		} finally {
 			jedis.close();
 		}
+		return false;
 	}
 
-	public static void deleteUser(ShardedJedisPool pool, String uid) {
+	public static LoginUser getLoginUserByUid(ShardedJedisPool pool, String uid) {
 		ShardedJedis jedis = null;
 		try {
 			jedis = pool.getResource();
-			String last_cookie = jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "cookie").get(0);
-			if (last_cookie != null) {
-				// 删除cookie-map
-				jedis.del(last_cookie);
-			}
-			// 删除user-map
-			jedis.del(JedisKeyGenerator.getCookieKey(uid));
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		} finally {
-			jedis.close();
-		}
-	}
-
-	public static LoginUser getUserBySession(ShardedJedisPool pool, HttpSession session) {
-		ShardedJedis jedis = null;
-		try {
-			jedis = pool.getResource();
-			String uid = (String) session.getAttribute("uid");
-			if (uid != null && jedis.exists(JedisKeyGenerator.getCookieKey(uid))) {
-				LoginUser member = new LoginUser();
-				member.setUid(jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "uid").get(0));
-				member.setUsername(jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "username").get(0));
-				member.setAccountStatus(jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "accountStatus").get(0));
-				member.setCookiesaved(jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "cookiesaved").get(0));
-				member.setSessionID(jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "sessionID").get(0));
-				member.setAvatarID(jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "avatarID").get(0));
-				return member;
+			// 获取userCookieKey
+			String userCookiekey = JedisKeyGenerator.getUserCookieKeyByUid(uid);
+			if (StringUtils.isNotBlank(userCookiekey) && jedis.exists(userCookiekey)) {
+				return getLoginUserByCookieMapKey(jedis, jedis.get(userCookiekey));
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -97,33 +77,35 @@ public class JedisUtil {
 		return null;
 	}
 
-	public static LoginUser getUserByCookie(ShardedJedisPool pool, Cookie[] cookie) {
+	public static LoginUser getLoginUserByCookie(ShardedJedisPool pool, Cookie[] cookie) {
 		ShardedJedis jedis = null;
 		try {
 			jedis = pool.getResource();
 			if (cookie != null) {
-				String userCookie = null;
 				for (int i = 0; i < cookie.length; i++) {
 					if (cookie[i].getName().equals("user_token")) {
-						userCookie = cookie[i].getValue();
-						break;
+						return getLoginUserByCookieMapKey(jedis, JedisKeyGenerator.getCookieMapKeyByCookie(cookie[i].getValue()));
 					}
-				}
-				if (userCookie != null && jedis.exists(userCookie)) {
-					LoginUser loginUser = new LoginUser();
-					loginUser.setUid(jedis.hmget(userCookie, "uid").get(0));
-					loginUser.setUsername(jedis.hmget(userCookie, "username").get(0));
-					loginUser.setAccountStatus(jedis.hmget(userCookie, "accountStatus").get(0));
-					loginUser.setCookiesaved(jedis.hmget(userCookie, "cookiesaved").get(0));
-					loginUser.setSessionID(jedis.hmget(userCookie, "sessionID").get(0));
-					loginUser.setAvatarID(jedis.hmget(userCookie, "avatarID").get(0));
-					return loginUser;
 				}
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		} finally {
 			jedis.close();
+		}
+		return null;
+	}
+
+	private static LoginUser getLoginUserByCookieMapKey(ShardedJedis jedis, String cookieMapKey) {
+		if (StringUtils.isNotBlank(cookieMapKey) && jedis.exists(cookieMapKey)) {
+			LoginUser loginUser = new LoginUser();
+			loginUser.setUid(jedis.hget(cookieMapKey, LoginUser.UID));
+			loginUser.setUsername(jedis.hget(cookieMapKey, LoginUser.USERNAME));
+			loginUser.setEmail(jedis.hget(cookieMapKey, LoginUser.EMAIL));
+			loginUser.setAccountStatus(jedis.hget(cookieMapKey, LoginUser.ACCOUNT_STATUS));
+			loginUser.setSessionID(jedis.hget(cookieMapKey, LoginUser.SESSION_ID));
+			loginUser.setCookieSaved(Boolean.valueOf(jedis.hget(cookieMapKey, LoginUser.COOKIE_SAVED)));
+			return loginUser;
 		}
 		return null;
 	}
@@ -132,15 +114,16 @@ public class JedisUtil {
 		ShardedJedis jedis = null;
 		try {
 			jedis = pool.getResource();
-			if (jedis.exists(JedisKeyGenerator.getCookieKey(uid))) {
-				String last_cookie = jedis.hmget(JedisKeyGenerator.getCookieKey(uid), "cookie").get(0);
-				if (last_cookie != null) {
+			// 获取userCookieKey
+			String userCookiekey = JedisKeyGenerator.getUserCookieKeyByUid(uid);
+			if (StringUtils.isNotBlank(userCookiekey) && jedis.exists(userCookiekey)) {
+				// 通过userCookieKey获取cookieMapKey
+				String cookieMapKey = jedis.get(userCookiekey);
+				if (StringUtils.isNotBlank(cookieMapKey) && jedis.exists(cookieMapKey)) {
 					// 更新cookie-map
-					jedis.hset(last_cookie, key, value);
+					jedis.hset(cookieMapKey, key, value);
+					return true;
 				}
-				// 更新user-map
-				jedis.hset(JedisKeyGenerator.getCookieKey(uid), key, value);
-				return true;
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -148,5 +131,27 @@ public class JedisUtil {
 			jedis.close();
 		}
 		return false;
+	}
+
+	public static void deleteUser(ShardedJedisPool pool, String uid) {
+		ShardedJedis jedis = null;
+		try {
+			jedis = pool.getResource();
+			// 获取userCookieKey
+			String userCookiekey = JedisKeyGenerator.getUserCookieKeyByUid(uid);
+			if (StringUtils.isNotBlank(userCookiekey) && jedis.exists(userCookiekey)) {
+				// 通过userCookieKey获取cookieMapKey
+				String cookieMapKey = jedis.get(userCookiekey);
+				if (StringUtils.isNotBlank(cookieMapKey) && jedis.exists(cookieMapKey)) {
+					// 更新cookie-map
+					jedis.del(cookieMapKey);
+				}
+				jedis.del(userCookiekey);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		} finally {
+			jedis.close();
+		}
 	}
 }
