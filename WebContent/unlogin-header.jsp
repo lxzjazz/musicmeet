@@ -10,7 +10,7 @@
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <base href="<%=basePath%>">
-<title>${title}-音遇 MusicMeet</title>
+<title>${title}-音遇MusicMeet</title>
 <head>
 <jsp:include page="source.jsp"></jsp:include>
 <link href="public/stylesheet/unlogin-header.css" rel="stylesheet" type="text/css" />

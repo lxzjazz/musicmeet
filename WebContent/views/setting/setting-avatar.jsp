@@ -6,7 +6,7 @@
 	<div class="dotted_line"></div>
 	<div class="avatar_info">
 		<form method="POST" enctype="multipart/form-data" id="form-avatar">
-			<input type="file" name="file" id="file" accept="image/*"/>
+			<input type="file" name="file" id="file" accept="image/*" />
 			<div class="pull-left">
 				<div class="btn_area">
 					<button id="selectBtn" class="btn btn-primary pull-left">

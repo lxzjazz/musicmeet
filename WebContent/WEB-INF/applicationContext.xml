@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
-	http://www.springframework.org/schema/context 
-	http://www.springframework.org/schema/context/spring-context-2.5.xsd" default-lazy-init="true">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd" default-lazy-init="false">
 
 	<!-- 读取正式配置文件 -->
-	<context:property-placeholder location="classpath:settings.properties" />
+	<!-- <context:property-placeholder location="classpath:settings.properties" /> -->
 
 	<!-- 读取测试配置文件 -->
-	<!-- <context:property-placeholder location="classpath:settings_test.properties" /> -->
+	<context:property-placeholder location="classpath:settings_test.properties" />
 
 	<!-- 数据源配置 -->
 	<bean id="jade.dataSource.cn.musicmeet.dao" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="${jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://${mysql.host}:${mysql.port}/${mysql.dbname}?useUnicode=true&amp;characterEncoding=utf8"></property>
+		<property name="user" value="${mysql.username}"></property>
+		<property name="password" value="${mysql.password}"></property>
 		<!-- 连接池在回收数据库连接时是否自动提交事务,false:回滚未提交的事务;true:自动提交事务 -->
 		<property name="autoCommitOnClose" value="true" />
 		<!-- 如果当前处于数据库访问高峰,连接池已被耗尽,当等待10000毫秒后还没有连接上,则抛出SQL异常,默认值是0,即永远等待 -->
@@ -38,25 +36,24 @@
 		<property name="idleConnectionTestPeriod" value="60" />
 	</bean>
 
+	<!-- redis 数据源配置 -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-		<property name="maxTotal" value="50" />
-		<property name="maxIdle" value="10" />
-		<property name="maxWaitMillis" value="1000" />
+		<property name="maxTotal" value="${redis.maxTotal}" />
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
 		<property name="testOnBorrow" value="true" />
 		<property name="testOnReturn" value="true" />
 		<property name="testWhileIdle" value="false" />
 	</bean>
-
 	<bean id="jedis.shardInfo" class="redis.clients.jedis.JedisShardInfo">
 		<constructor-arg index="0" value="${redis.host}" />
 		<constructor-arg index="1" value="${redis.port}" type="int" />
-		<constructor-arg index="2" value="2000" type="int" />
-		<constructor-arg index="3" value="master" />
-		<!-- <property name="password" value="master" /> -->
+		<constructor-arg index="2" value="${redis.timeout}" type="int" />
+		<constructor-arg index="3" value="${redis.name}" />
+		<!-- <property name="password" value="${redis.password}" /> -->
 		<!-- 源码中默认设置与timeout一样 -->
-		<!-- <property name="connectionTimeout" value="2000" /> -->
+		<!-- <property name="connectionTimeout" value="${redis.timeout}" /> -->
 	</bean>
-
 	<bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
 		<constructor-arg index="0" ref="jedisPoolConfig" />
 		<constructor-arg index="1">

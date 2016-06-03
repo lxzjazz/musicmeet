@@ -9,7 +9,9 @@
 	$("#header .nav li.active").removeClass("active");
 	$("#header .nav").find("li[name='index']").addClass("active");
 </script>
-<p style="width: 100%;text-align: center;"><img src="public/image/banner.png" style="display: inline-block;margin: 140px auto;"></p>
+<p style="width: 100%; text-align: center;">
+	<img src="public/image/banner.png" style="display: inline-block; margin: 140px auto;">
+</p>
 <c:if test="${empty sGlobal}">
 	<jsp:include page="../footer.jsp"></jsp:include>
 </c:if>

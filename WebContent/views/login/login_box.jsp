@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <style>
-#re-login-modal{
+#re-login-modal {
 	width: 580px;
 }
 
@@ -32,7 +32,7 @@
 	padding-left: 18px;
 }
 
-#re-login-modal .reg_nav,.reg_nav a {
+#re-login-modal .reg_nav, .reg_nav a {
 	color: #00b38a;
 }
 
@@ -45,7 +45,8 @@
 	padding-bottom: 2px;
 }
 
-#re-login-modal .section-content .help-block,#re-login-modal .section-content .help-inline {
+#re-login-modal .section-content .help-block, #re-login-modal .section-content .help-inline
+	{
 	visibility: hidden;
 }
 
@@ -126,7 +127,7 @@
 		$.post('login', {
 			email : $("#box-email").val(),
 			password : $("#box-password").val(),
-			cookiesaved : $("#box-cookiesaved").attr("checked") == "checked"
+			cookieSaved : $("#box-cookiesaved").attr("checked") == "checked"
 		}, function(data) {
 			if (data.error) {
 				$(".submit-result").attr("class", "label label-important submit-result");

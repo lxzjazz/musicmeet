@@ -4,7 +4,5 @@
 
 <jsp:include page="../header.jsp"></jsp:include>
 <script type="text/javascript" src="public/javascript/route.js"></script>
-<div id="view" class="container">
-	
-</div>
+<div id="view" class="container"></div>
 <jsp:include page="../footer.jsp"></jsp:include>

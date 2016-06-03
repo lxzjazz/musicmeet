@@ -143,14 +143,14 @@ function checkUsername(input) {
 			add_u_error();
 			activateRegBtn();
 		} else if (!$(input).hasAttr("tested")) {
-			$.post("register/check_username", {
+			$.post("register/check/username", {
 				username : username
 			}, function(data) {
 				if (data.error) {
 					$(input).addClass("error");
 					$(".section-content .username-tip").html(data.error);
 					$(".section-content .username-tip").css("visibility", "visible");
-				} else if (data.check_username == "existed") {
+				} else if (data.existed) {
 					$(input).addClass("my-invalid");
 					$(".section-content .username-tip").css("visibility", "visible");
 				}
@@ -194,14 +194,14 @@ function checkEmail(input) {
 			add_e_error();
 			activateRegBtn();
 		} else if (!$(input).hasAttr("tested")) {
-			$.post("register/check_email", {
+			$.post("register/check/email", {
 				email : email
 			}, function(data) {
 				if (data.error) {
 					$(input).addClass("error");
 					$(".section-content .email-tip").html(data.error);
 					$(".section-content .email-tip").css("visibility", "visible");
-				} else if (data.check_email == "existed") {
+				} else if (data.existed) {
 					$(input).addClass("my-invalid");
 					$(".section-content .email-tip").css("visibility", "visible");
 				}

@@ -13,7 +13,7 @@ $(document).ready(function() {
 		$.post('login', {
 			email : $("#email").val(),
 			password : $("#password").val(),
-			cookiesaved : $("#cookiesaved").attr("checked") == "checked"
+			cookieSaved : $("#cookiesaved").attr("checked") == "checked"
 		}, function(data) {
 			if (data.error) {
 				$(".submit-result").attr("class", "label label-important submit-result");

@@ -7,7 +7,7 @@
 <div class="modal-body" id="avatar_area" avatar_id="${sessionScope.avatar_id}">
 	<div class="avatar_info">
 		<form method="POST" enctype="multipart/form-data" id="form-avatar">
-			<input type="file" name="file" id="file" accept="image/*"/>
+			<input type="file" name="file" id="file" accept="image/*" />
 			<div class="pull-left" style="margin-top: 50px;">
 				<div id="picture_index">
 					<img src="public/image/avatar.png" width="300px" height="300px" />

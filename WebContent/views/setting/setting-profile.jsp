@@ -43,7 +43,7 @@
 				<div class="control-group">
 					<label class="control-label" for="username">常用昵称</label>
 					<div class="controls">
-						<input style="width: 120px;padding-left: 16px;" class="input-xlarge" id="username" type="text" value="${sGlobal.username}" disabled="disabled" />
+						<input style="width: 120px; padding-left: 16px;" class="input-xlarge" id="username" type="text" value="${sGlobal.username}" disabled="disabled" />
 					</div>
 				</div>
 				<div class="control-group">

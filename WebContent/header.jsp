@@ -10,9 +10,7 @@
 <head>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <base href="<%=basePath%>">
 <title>音遇 MusicMeet</title>
@@ -28,7 +26,7 @@
 						<a class="brand" href="#index" style="padding: 0px 10px 0px 20px;"><img src="public/image/pic_logo.png"></a>
 					</c:when>
 					<c:otherwise>
-						<a class="brand" href="" style="padding: 0px 10px 0px 20px;"><img src="public/image/pic_logo.png"></a>	
+						<a class="brand" href="" style="padding: 0px 10px 0px 20px;"><img src="public/image/pic_logo.png"></a>
 					</c:otherwise>
 				</c:choose>
 				<div class="nav-collapse collapse" style="height: 0px;">
