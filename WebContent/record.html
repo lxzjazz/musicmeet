@@ -1,0 +1,39 @@
+<div id="recorder_box" class="popover bottom" status="listening">
+	<div class="arrow"></div>
+	<span title="关闭" class="span-close" onclick="closeRecord()"></span>
+	<div class="popover-content" style="padding: 3px 5px; padding-bottom: 0;">
+		<p class="recorder-tip">
+			点击麦克风 <span class="success">开始</span> 录音
+		</p>
+		<div id="wami">
+			<object type="application/x-shockwave-flash" id="recorder"> </object>
+			<div id="recorder-area">
+				<p id="recorder-time">00:00</p>
+				<div id="recorder-btn">
+					<div class="recorder-div guidiv">
+						<div class="recorder-div meterDiv">
+							<div class="recorder-div coverDiv"></div>
+						</div>
+					</div>
+				</div>
+				<div id="recorder-status"></div>
+			</div>
+			<div id="player-area">
+				<p id="player-time">
+					<span class="timer">00:00</span><span class="total">/00:00</span>
+				</p>
+				<div id="player-btn">
+					<div class="player-div guidiv">
+						<div class="player-div meterDiv">
+							<div class="player-div coverDiv"></div>
+						</div>
+					</div>
+				</div>
+				<div class="btn-area">
+					<a id="rerecord-btn" class="btn pull-left" onclick="reRecord()"> <i class="icon-microphone"></i> 重录
+					</a> <a id="post-btn" class="btn btn-primary pull-right" onclick="postAudio(this)"><i class="icon-ok icon-white"></i> 发送</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

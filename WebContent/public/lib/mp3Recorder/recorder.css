@@ -1,0 +1,226 @@
+#wami {
+	width: 160px;
+	height: 120px;
+	overflow: hidden;
+}
+
+#recorder_box {
+	display: block;
+	visibility: hidden;
+	border-radius: 0;
+	margin-top: 6px;
+	z-index: 2;
+}
+
+#recorder_box p {
+	margin: 0px;
+}
+
+#recorder_box .arrow {
+	border-width: 8px;
+	top: -16px;
+}
+
+#recorder_box.visible {
+	display: block;
+	visibility: visible;
+}
+
+#recorder_box .btn-area {
+	position: absolute;
+	width: 160px;
+	height: 26px;
+}
+
+#recorder_box .btn-area .btn {
+	font-size: 12px;
+	padding: 1px 8px;
+}
+
+#recorder_box span {
+	margin-right: 0;
+}
+
+#recorder_box span.span-close {
+	position: absolute;
+	width: 17px;
+	height: 17px;
+	top: 4px;
+	right: 4px;
+	background: url(close.fw.png) center bottom no-repeat;
+	display: inline-block;
+	cursor: pointer;
+	z-index: 2;
+}
+
+/* #recorder-time,#player-time span {
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+} */
+#recorder_box #recorder-time,#recorder_box #player-time {
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 2px 0;
+}
+
+#recorder-btn,#player-btn {
+	width: 56px;
+	padding: 4px 52px;
+}
+
+#recorder-area .recorder-div,#player-area .player-div {
+	width: 56px;
+	height: 63px;
+	cursor: pointer;
+	background-image: url(buttons.png);
+	text-align: center;
+	background-repeat: no-repeat no-repeat;
+}
+
+#recorder-area .recorder-div.guidiv {
+	background-position: -56px 0px;
+}
+
+#recorder-area .recorder-div.guidiv:hover {
+	background-position: -112px 0px;
+}
+
+#recorder-area .recorder-div.meterDiv {
+	width: 20px;
+	height: 63px;
+	margin: auto;
+	background-position: -169px 5px;
+}
+
+#recorder-area .recorder-div.coverDiv {
+	width: 20px;
+	height: 40px;
+	margin: auto;
+	background-position: -169px 5px;
+}
+
+#player-area .player-div.guidiv {
+	background-position: -56px 0px;
+}
+
+#player-area .player-div.guidiv:hover {
+	background-position: -112px 0px;
+}
+
+#player-area .player-div.meterDiv {
+	width: 29px;
+	height: 63px;
+	margin: auto;
+	background-position: -327px 5px;
+}
+
+#player-area .player-div.coverDiv {
+	width: 29px;
+	height: 40px;
+	margin: auto;
+	background-position: -269px 5px;
+}
+
+#recorder_box .recorder-tip {
+	font-size: 12px;
+	text-align: center;
+	height: 20px;
+	margin-top: -2px;
+}
+
+#recorder_box .recorder-tip span {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 20px;
+	white-space: nowrap;
+	vertical-align: baseline;
+}
+
+#recorder_box .recorder-tip span.success {
+	color: #468847;
+}
+
+#recorder_box .recorder-tip span.important {
+	color: #b94a48;
+}
+
+#recorder-area,#player-area {
+	position: absolute;
+	width: 160px;
+	height: 120px;
+	z-index: 1;
+}
+
+#player-area {
+	display: none;
+}
+
+#recorder {
+	position: absolute;
+	z-index: 2;
+	margin-top: -25px;
+	margin-left: -6px;
+}
+
+#recorder-status {
+	position: absolute;
+	width: 160px;
+	height: 28px;
+	text-align: center;
+}
+
+#recorder-status .label-success {
+	height: 17px;
+	margin-top: 4px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-ms-border-radius: 0px;
+	border-radius: 0px;
+}
+
+.player-btn {
+	height: 28px;
+	line-height: 28px;
+	border: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-ms-border-radius: 0px;
+	border-radius: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#player_box {
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-ms-border-radius: 0px;
+	border-radius: 0px;
+	margin-top: 7px;
+	display: block;
+	visibility: hidden;
+}
+
+#player_box.visible {
+	display: block;
+	visibility: visible;
+}
+
+#player_box .arrow {
+	left: 185px;
+	border-width: 8px;
+	top: -16px;
+}
+
+#player_box.playbox-right .arrow{
+	left: 42px;
+}
+
+#player_box .popover-content {
+	padding: 3px 5px;
+	height: 24px;
+}

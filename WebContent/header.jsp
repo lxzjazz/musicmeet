@@ -34,9 +34,11 @@
 						<c:choose>
 							<c:when test="${not empty sGlobal}">
 								<li name="index"><a href="javascript:get_url('index')">首页</a></li>
+								<li name="chat"><a href="javascript:get_url('chat')">聊天室</a></li>
 							</c:when>
 							<c:otherwise>
 								<li name="index"><a href="">首页</a></li>
+								<li name="chat"><a href="chat">聊天室</a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>
