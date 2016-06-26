@@ -4,7 +4,7 @@
 	<a class="close" data-dismiss="modal">×</a>
 	<h3>上传头像</h3>
 </div>
-<div class="modal-body" id="avatar_area" avatar_id="${sessionScope.avatar_id}">
+<div class="modal-body" id="avatar_area" avatar_id="${pageContext.session.id}">
 	<div class="avatar_info">
 		<form method="POST" enctype="multipart/form-data" id="form-avatar">
 			<input type="file" name="file" id="file" accept="image/*" />

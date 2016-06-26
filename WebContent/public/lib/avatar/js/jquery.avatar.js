@@ -56,7 +56,7 @@ $("#saveBtn").click(function() {
 			},
 			success : function(data, status) {// 上传成功
 				// 更新弹出框,更新弹出框的三个头像,更新注册页面头像
-				$.get('register/avatar_modal?r=' + Math.random()).done(function(data1) {
+				$.get('register/avatar/modal?r=' + Math.random()).done(function(data1) {
 					$('#avatarModal').html(data1);
 					if (data.success) {
 						$('#reg_avatar img').attr('src', 'avatar/' + $("#avatar_area").attr("avatar_id") + '?size=middle&r=' + Math.random());
@@ -79,7 +79,7 @@ $("#file").change(function() {
 		alert("对不起,IE浏览器不支持头像上传");
 	} else {
 		var img_file = file.files[0];
-		if (/image\/\w+/.test(img_file.type)) {
+		if (img_file && /image\/\w+/.test(img_file.type)) {
 			var reader = new FileReader();
 			reader.readAsDataURL(img_file);
 			reader.onload = function(e) {
@@ -91,6 +91,10 @@ $("#file").change(function() {
 				$("#saveBtn").removeAttr("disabled");
 				$("#saveBtn").attr("class", "btn btn-primary pull-right");
 			};
+		} else {
+			$.get('register/avatar/modal?r=' + Math.random()).done(function(data1) {
+				$('#avatarModal').html(data1);
+			});
 		}
 	}
 });

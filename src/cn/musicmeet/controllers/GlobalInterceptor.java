@@ -73,9 +73,6 @@ public class GlobalInterceptor extends ControllerInterceptorAdapter {
 	}
 
 	private boolean checkLoginUser(LoginUser loginUser) {
-		if (loginUser == null || StringUtils.isNoneBlank(loginUser.getUid(), loginUser.getUsername(), loginUser.getEmail(), loginUser.getAccountStatus(), loginUser.getAvatarID(), loginUser.getSessionID())) {
-			return false;
-		}
-		return true;
+		return loginUser != null && StringUtils.isNoneBlank(loginUser.getUid(), loginUser.getUsername(), loginUser.getEmail(), loginUser.getAccountStatus(), loginUser.getAvatarID(), loginUser.getSessionID());
 	}
 }

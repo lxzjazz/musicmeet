@@ -30,7 +30,7 @@ import cn.musicmeet.util.JedisUtil;
 @Path("")
 public class RegisterController {
 
-	private Logger logger = Logger.getLogger(RegisterController.class);
+	private final static Logger logger = Logger.getLogger(RegisterController.class);
 
 	@Autowired
 	private UserDAO userDAO;
@@ -43,7 +43,7 @@ public class RegisterController {
 		return "register";
 	}
 
-	@Get("avatarModal")
+	@Get("avatar/modal")
 	public String getAvatarModal() {
 		return "avatar-modal";
 	}
@@ -153,7 +153,7 @@ public class RegisterController {
 		}
 	}
 
-	private String getRealPath(Invocation inv, String avatar_id, String size) {
-		return (inv.getServletContext().getRealPath("data") + "/avatar/" + avatar_id + "_" + size + ".jpeg").replace("/", System.getProperties().getProperty("file.separator"));
+	private String getRealPath(Invocation inv, String avatarID, String size) {
+		return (inv.getServletContext().getRealPath("data") + "/avatar/" + avatarID + "_" + size + ".jpeg").replace("/", System.getProperties().getProperty("file.separator"));
 	}
 }

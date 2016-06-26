@@ -14,13 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.paoding.rose.web.Invocation;
-import net.paoding.rose.web.annotation.Param;
-import net.paoding.rose.web.annotation.Path;
-import net.paoding.rose.web.annotation.rest.Get;
-import net.paoding.rose.web.annotation.rest.Post;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,11 +21,17 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.musicmeet.beans.LoginUser;
 import cn.musicmeet.controllers.LoginRequired;
 import cn.musicmeet.util.ImageUtil;
+import net.paoding.rose.web.Invocation;
+import net.paoding.rose.web.annotation.Param;
+import net.paoding.rose.web.annotation.Path;
+import net.paoding.rose.web.annotation.rest.Get;
+import net.paoding.rose.web.annotation.rest.Post;
+import net.sf.json.JSONObject;
 
 @Path("")
 public class AvatarController {
 
-	private Logger logger = Logger.getLogger(AvatarController.class);
+	private final static Logger logger = Logger.getLogger(AvatarController.class);
 
 	// 支持上传的图片类型
 	private final static String[] IMGS = { "jpg", "png", "jpeg" };

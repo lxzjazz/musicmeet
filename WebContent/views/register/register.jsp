@@ -87,7 +87,7 @@
 							<label class="control-label" for="reg_avatar">个性头像</label>
 							<div class="controls">
 								<div id="reg_avatar">
-									<img src="avatar/${sessionScope.avatar_id}?size=middle" class="img-polaroid" onclick='get_avatarModal()' style="cursor: pointer;">
+									<img src="avatar/${pageContext.session.id}?size=middle" class="img-polaroid" onclick='get_avatarModal()' style="cursor: pointer;">
 								</div>
 							</div>
 						</div>

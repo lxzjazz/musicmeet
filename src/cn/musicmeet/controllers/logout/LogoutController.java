@@ -4,21 +4,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import com.alibaba.fastjson.JSONObject;
+
+import cn.musicmeet.controllers.GlobalDeny;
 import net.paoding.rose.web.Invocation;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
-import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
-
-import cn.musicmeet.controllers.GlobalDeny;
 
 @GlobalDeny
 @Path("")
 public class LogoutController {
 
-	private Logger logger = Logger.getLogger(LogoutController.class);
+	private final static Logger logger = Logger.getLogger(LogoutController.class);
 
 	@Get
 	public String getLogout(Invocation inv, HttpServletRequest request, HttpServletResponse response) {
@@ -46,10 +46,10 @@ public class LogoutController {
 			cookie.setMaxAge(0);
 			cookie.setPath(request.getContextPath() + "/");
 			response.addCookie(cookie);
-			json.element("success", "退出成功");
+			json.put("success", "退出成功");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			json.element("error", "对不起,服务器异常");
+			json.put("error", "对不起,服务器异常");
 		}
 		return json;
 	}

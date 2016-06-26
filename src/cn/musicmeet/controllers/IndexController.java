@@ -12,7 +12,7 @@ import cn.musicmeet.beans.LoginUser;
 public class IndexController {
 	@Get
 	public String get_index(Invocation inv, HttpServletRequest request) {
-		if (request.getAttribute(LoginUser.SGLOBAL) == null) {
+		if (request.getAttribute(LoginUser.SGLOBAL) != null) {
 			return "user-view-body";
 		}
 		return "index";

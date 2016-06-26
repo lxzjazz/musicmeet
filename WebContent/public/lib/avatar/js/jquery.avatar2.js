@@ -72,7 +72,7 @@ $("#file").change(function() {
 		alert("对不起,IE浏览器不支持头像上传");
 	} else {
 		var img_file = file.files[0];
-		if (/image\/\w+/.test(img_file.type)) {
+		if (img_file && /image\/\w+/.test(img_file.type)) {
 			var reader = new FileReader();
 			reader.readAsDataURL(img_file);
 			reader.onload = function(e) {
@@ -84,6 +84,8 @@ $("#file").change(function() {
 				$("#saveBtn").removeAttr("disabled");
 				$("#saveBtn").attr("class", "btn btn-primary pull-right");
 			};
+		} else {
+			post_url('setting-avatar', true);
 		}
 	}
 });

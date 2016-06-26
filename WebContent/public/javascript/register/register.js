@@ -77,7 +77,7 @@ var get_avatarModal = function() {
 	if ($('#avatarModal .modal-body')[0]) {
 		$('#avatarModal').modal('show');
 	} else {
-		$.get('register/avatar_modal').done(function(data) {
+		$.get('register/avatar/modal').done(function(data) {
 			$('#avatarModal').html(data);
 			$('#avatarModal').modal({
 				backdrop : "static",

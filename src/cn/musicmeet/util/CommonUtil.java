@@ -39,7 +39,7 @@ public class CommonUtil {
 		try {
 			return Base64.encodeBase64String(data.getBytes(Charsets.UTF_8.name()));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return "";
 	}
@@ -104,7 +104,7 @@ public class CommonUtil {
 			MersenneTwister mt = new MersenneTwister(secureRandom.nextLong());
 			return String.valueOf(mt.nextLong((long) Math.pow(10, length) - 1) % ((long) Math.pow(10, length) - (long) Math.pow(10, length - 1)) + (long) Math.pow(10, length - 1));
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return "";
 	}
