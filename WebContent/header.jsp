@@ -16,6 +16,11 @@
 <title>音遇 MusicMeet</title>
 <head>
 <jsp:include page="source.jsp"></jsp:include>
+<script type="text/javascript">
+	var ws = null;
+	var user = "${sGlobal.username}";
+	var user_avatar = "avatar/${pageContext.session.id}?size=small";
+</script>
 </head>
 <body>
 	<div id="header" class="navbar navbar-fixed-top">

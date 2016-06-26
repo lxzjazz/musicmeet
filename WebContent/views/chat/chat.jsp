@@ -11,11 +11,6 @@
 </script>
 <script type="text/javascript" src="public/lib/chat/chat.js"></script>
 <script type="text/javascript" src="public/lib/base64/Base64.js"></script>
-<script type="text/javascript">
-	var ws = null;
-	var user = "${sGlobal.username}";
-	var user_avatar = "avatar/${pageContext.session.id}?size=small";
-</script>
 </head>
 
 <div class="container">
