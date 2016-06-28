@@ -13,14 +13,18 @@ $(document).ready(function() {
 		return;
 	}
 	ws.onopen = function() {
-		$('#status').html('<span style="color:green;">已正常连接, 欢迎光临!</span>');
+		$('#status').html('<span style="color:green;">已正常连接</span>');
+		// 设置心态，防止nginx链接断开
+		setInterval(function() {
+			ws.send('');
+		}, 30 * 1000);
 	};
 	ws.onmessage = function(event) {
 		var data = event.data;
 		showMsg(data, false);
 	};
 	ws.onclose = function() {
-		$('#status').html('<span style="color:red;">连接已断开, 再见!</span>');
+		$('#status').html('<span style="color:red;">连接已断开</span>');
 		$('#num').text(0);
 	};
 
